@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ujjawal Jobs Portal</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -37,20 +35,20 @@
       font-size: 28px;
       text-align: center;
     }
-    #search-bar,
-    #filter-buttons {
+    #search-bar, #filter-buttons, #auth-section {
       text-align: center;
       margin-bottom: 15px;
     }
-    #search-input {
+    #search-input, input[type="email"], input[type="password"] {
       padding: 10px;
       width: 80%;
       max-width: 400px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      margin: 5px 0;
     }
-    #filter-buttons button {
+    #filter-buttons button, #auth-section button {
       margin: 5px;
       padding: 8px 16px;
       border: none;
@@ -102,41 +100,22 @@
       font-size: 14px;
       color: #666;
     }
-    #auth-section {
-      text-align: center;
-      margin-top: 20px;
-    }
-    input.auth-input {
-      padding: 10px;
-      margin: 5px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button.auth-btn {
-      padding: 10px 20px;
-      margin: 5px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
+    #message {
+      color: red;
+      font-weight: bold;
     }
     @media (min-width: 768px) {
-      h1 {
-        font-size: 36px;
-      }
-      #search-input {
-        width: 50%;
-      }
-      .link-box {
-        width: 45%;
-      }
+      h1 { font-size: 36px; }
+      #search-input { width: 50%; }
+      .link-box { width: 45%; }
     }
   </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+
   <header>
     <h1>Ujjawal Jobs Portal</h1>
   </header>
@@ -146,14 +125,15 @@
     💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
   </marquee>
 
-  <!-- Firebase Auth Section -->
+  <!-- Auth Section -->
   <div id="auth-section">
-    <input type="email" id="email" class="auth-input" placeholder="Email" />
-    <input type="password" id="password" class="auth-input" placeholder="Password" />
+    <h3>Login or Sign Up</h3>
+    <input type="email" id="email" placeholder="Enter your email" />
+    <input type="password" id="password" placeholder="Enter your password" />
     <br />
-    <button class="auth-btn" onclick="login()">Login</button>
-    <button class="auth-btn" onclick="signup()">Sign Up</button>
-    <p id="user-info"></p>
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <div id="message"></div>
   </div>
 
   <!-- Search Bar -->
@@ -169,7 +149,7 @@
     <button onclick="filterJobs('result')">Result</button>
   </div>
 
-  <!-- Job List -->
+  <!-- Job Listings -->
   <div class="links" id="linksContainer">
     <div class="link-box form">
       <a href="https://www.csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
@@ -208,10 +188,12 @@
     </div>
   </div>
 
-  <!-- Firebase & Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <footer>
+    &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
+  </footer>
+
   <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
       authDomain: "ujjawal-jobs-portal.firebaseapp.com",
@@ -224,33 +206,40 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      auth.signInWithEmailAndPassword(email, password)
-        .then(user => {
-          document.getElementById('user-info').innerText = "Logged in as: " + user.user.email;
-        })
-        .catch(error => alert(error.message));
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showMessage(msg) {
+      document.getElementById('message').textContent = msg;
     }
 
     function signup() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          document.getElementById('user-info').innerText = "Account created for: " + user.user.email;
-        })
-        .catch(error => alert(error.message));
-    }
-  </script>
+      if (!isValidEmail(email)) return showMessage("Invalid email format");
+      if (password.length < 6) return showMessage("Password must be at least 6 characters");
 
-  <script>
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => showMessage("Sign up successful"))
+        .catch(error => showMessage(error.message));
+    }
+
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      if (!isValidEmail(email)) return showMessage("Invalid email format");
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => showMessage("Login successful"))
+        .catch(error => showMessage(error.message));
+    }
+
     function filterJobs(category) {
       const boxes = document.querySelectorAll('.link-box');
       boxes.forEach(box => {
-        const matchCategory = box.classList.contains(category);
-        box.style.display = (category === 'all' || matchCategory) ? 'block' : 'none';
+        const match = box.classList.contains(category);
+        box.style.display = (category === 'all' || match) ? 'block' : 'none';
       });
     }
 
@@ -264,8 +253,5 @@
     }
   </script>
 
-  <footer>
-    &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
-  </footer>
 </body>
 </html>
