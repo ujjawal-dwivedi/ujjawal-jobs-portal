@@ -192,66 +192,77 @@
     &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
   </footer>
 
-  <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
-      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
-      projectId: "ujjawal-jobs-portal",
-      storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
-      messagingSenderId: "746809559960",
-      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
-      measurementId: "G-R1EBJHZ8KP"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+ <!-- Firebase App SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+    authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+    projectId: "ujjawal-jobs-portal",
+    storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+    messagingSenderId: "746809559960",
+    appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+    measurementId: "G-R1EBJHZ8KP"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
+
+<!-- Login/Signup UI -->
+<div style="max-width: 400px; margin: 20px auto; padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
+  <h3>Login / Signup</h3>
+  <input type="email" id="email" placeholder="Email" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+  <input type="password" id="password" placeholder="Password" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+  <button onclick="signup()" style="width: 100%; padding: 10px; margin-bottom: 5px; background: green; color: white;">Sign Up</button>
+  <button onclick="login()" style="width: 100%; padding: 10px; background: blue; color: white;">Login</button>
+  <p id="authMsg" style="color: red; text-align: center; margin-top: 10px;"></p>
+</div>
+
+<!-- Auth Script -->
+<script>
+  function signup() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+      document.getElementById("authMsg").textContent = "Please enter email and password.";
+      return;
     }
 
-    function showMessage(msg) {
-      document.getElementById('message').textContent = msg;
-    }
-
-    function signup() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      if (!isValidEmail(email)) return showMessage("Invalid email format");
-      if (password.length < 6) return showMessage("Password must be at least 6 characters");
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => showMessage("Sign up successful"))
-        .catch(error => showMessage(error.message));
-    }
-
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      if (!isValidEmail(email)) return showMessage("Invalid email format");
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => showMessage("Login successful"))
-        .catch(error => showMessage(error.message));
-    }
-
-    function filterJobs(category) {
-      const boxes = document.querySelectorAll('.link-box');
-      boxes.forEach(box => {
-        const match = box.classList.contains(category);
-        box.style.display = (category === 'all' || match) ? 'block' : 'none';
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(user => {
+        document.getElementById("authMsg").style.color = "green";
+        document.getElementById("authMsg").textContent = "Signup successful!";
+      })
+      .catch(error => {
+        document.getElementById("authMsg").style.color = "red";
+        document.getElementById("authMsg").textContent = error.message;
       });
+  }
+
+  function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+      document.getElementById("authMsg").textContent = "Please enter email and password.";
+      return;
     }
 
-    function searchJobs() {
-      const input = document.getElementById('search-input').value.toLowerCase();
-      const boxes = document.querySelectorAll('.link-box');
-      boxes.forEach(box => {
-        const text = box.textContent.toLowerCase();
-        box.style.display = text.includes(input) ? 'block' : 'none';
+    auth.signInWithEmailAndPassword(email, password)
+      .then(user => {
+        document.getElementById("authMsg").style.color = "green";
+        document.getElementById("authMsg").textContent = "Login successful!";
+      })
+      .catch(error => {
+        document.getElementById("authMsg").style.color = "red";
+        document.getElementById("authMsg").textContent = error.message;
       });
-    }
-  </script>
-
+  }
+</script>
 </body>
 </html>
