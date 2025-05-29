@@ -1,8 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - Ujjawal Jobs Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    p {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Ujjawal Jobs Portal</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <br/>
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <p id="error"></p>
+  </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
@@ -13,73 +67,36 @@
       apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
       authDomain: "ujjawal-jobs-portal.firebaseapp.com",
       projectId: "ujjawal-jobs-portal",
-      storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+      storageBucket: "ujjawal-jobs-portal.appspot.com",
       messagingSenderId: "746809559960",
       appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
       measurementId: "G-R1EBJHZ8KP"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-  </script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-    input {
-      padding: 10px;
-      margin: 10px;
-      width: 80%;
-      max-width: 300px;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h2>Login / Signup</h2>
-  <input type="email" id="email" placeholder="Enter your email" required><br>
-  <input type="password" id="password" placeholder="Enter your password" required><br>
-  <button onclick="signup()">Sign Up</button>
-  <button onclick="login()">Login</button>
-  <p id="error-message" style="color:red;"></p>
-
-  <script>
-    function signup() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (!email.includes("@") || !email.includes(".")) {
-        document.getElementById("error-message").innerText = "Enter a valid email address.";
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch((error) => {
-          document.getElementById("error-message").innerText = error.message;
-        });
-    }
 
     function login() {
       const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (!email.includes("@") || !email.includes(".")) {
-        document.getElementById("error-message").innerText = "Enter a valid email address.";
-        return;
-      }
-      firebase.auth().signInWithEmailAndPassword(email, password)
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password)
         .then(() => {
           window.location.href = "index.html";
         })
-        .catch((error) => {
-          document.getElementById("error-message").innerText = error.message;
+        .catch(err => {
+          document.getElementById("error").innerText = err.message;
+        });
+    }
+
+    function signup() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "index.html";
+        })
+        .catch(err => {
+          document.getElementById("error").innerText = err.message;
         });
     }
   </script>
