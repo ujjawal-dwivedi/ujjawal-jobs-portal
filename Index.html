@@ -1,49 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ujjawal Jobs Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #f4f6f8;
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      padding: 0 10px;
     }
 
     header {
-      text-align: center;
-      background-color: #007bff;
-      padding: 10px 20px;
+      background-color: #343a40;
       color: white;
-    }
-
-    header img {
-      max-width: 100px;
-      margin-bottom: 5px;
-    }
-
-    header h1 {
-      font-size: 26px;
-      margin: 5px 0;
-    }
-
-    main {
-      padding: 15px;
-    }
-
-    #search-bar, #filter-buttons {
+      padding: 15px 20px;
       text-align: center;
-      margin-bottom: 20px;
+    }
+
+    marquee {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    marquee a {
+      color: #007bff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    #search-bar,
+    #filter-buttons {
+      text-align: center;
+      margin-bottom: 15px;
     }
 
     #search-input {
-      width: 90%;
-      max-width: 400px;
       padding: 10px;
+      width: 80%;
+      max-width: 400px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -51,55 +60,74 @@
 
     #filter-buttons button {
       margin: 5px;
-      padding: 8px 14px;
+      padding: 8px 16px;
+      border: none;
       background-color: #007bff;
       color: white;
-      border: none;
       border-radius: 5px;
-      font-size: 14px;
       cursor: pointer;
-    }
-
-    #filter-buttons button:hover {
-      background-color: #0056b3;
+      font-size: 14px;
     }
 
     .links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 600px;
+      max-width: 900px;
       margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
     }
 
     .link-box {
       background-color: white;
       padding: 15px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .link-box:hover {
+      transform: scale(1.01);
     }
 
     .link-box a {
-      display: block;
+      text-decoration: none;
       color: #007bff;
       font-weight: bold;
-      text-decoration: none;
-      font-size: 16px;
-      margin-bottom: 6px;
+      display: block;
+      margin-bottom: 10px;
     }
 
-    .link-box span {
+    .apply-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 14px;
-      color: #555;
     }
 
-    @media (min-width: 600px) {
-      header h1 {
-        font-size: 32px;
+    footer {
+      text-align: center;
+      margin: 30px 0 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 36px;
       }
 
-      .link-box a {
-        font-size: 18px;
+      #search-input {
+        width: 50%;
+      }
+
+      .link-box {
+        width: 45%;
       }
     }
   </style>
@@ -110,67 +138,65 @@
     <h1>Ujjawal Jobs Portal</h1>
   </header>
 
-  <main>
-    <!-- Search Bar -->
-    <div id="search-bar">
-      <input type="text" id="search-input" onkeyup="searchJobs()" placeholder="Search for a job...">
-    </div>
+  <!-- Running Headline -->
+  <marquee behavior="scroll" direction="left" scrollamount="5">
+    🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">CDS 2025</a> |
+    💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
+  </marquee>
 
-    <!-- Filter Buttons -->
-    <div id="filter-buttons">
-      <button onclick="filterJobs('all')">All</button>
-      <button onclick="filterJobs('form')">Online Form</button>
-      <button onclick="filterJobs('admit')">Admit Card</button>
-      <button onclick="filterJobs('result')">Result</button>
-    </div>
+  <!-- Search Bar -->
+  <div id="search-bar">
+    <input type="text" id="search-input" onkeyup="searchJobs()" placeholder="Search for a job...">
+  </div>
 
-    <!-- Job List -->
-    <div class="links" id="linksContainer">
-      <div class="link-box form">
-        <a href="https://csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
-        <span>Form</span>
-      </div>
-      <div class="link-box result">
-  <a href="https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf" target="_blank">
-    CET B.Ed Answer Key
-  </a>
-  <span>Answer</span>
-</div>
-      <div class="link-box form">
-        <a href="https://ssc.nic.in/" target="_blank">SSC CGL 2025 Notification</a>
-        <span>Form</span>
-      </div>
-      <div class="link-box result">
-        <a href="https://upsc.gov.in/examinations/results" target="_blank">UPSC NDA 1 Result 2025</a>
-        <span>Result</span>
-      </div>
-      <div class="link-box form">
-        <a href="https://updeled.gov.in/" target="_blank">UPTET Online Form 2025</a>
-        <span>Form</span>
-      </div>
-      <div class="link-box result">
-        <a href="https://rrbcdg.gov.in/" target="_blank">Railway Group D Result</a>
-        <span>Result</span>
-      </div>
-      <div class="link-box admit">
-        <a href="https://ssc.nic.in/" target="_blank">SSC MTS Tier 1 Admit Card</a>
-        <span>Admit Card</span>
-      </div>
-      <div class="link-box form">
-        <a href="https://ctet.nic.in/" target="_blank">CTET July 2025 Online Form</a>
-        <span>Form</span>
-      </div>
-      <div class="link-box result">
-        <a href="https://delhipolice.gov.in/" target="_blank">Delhi Police Head Constable Result</a>
-        <span>Result</span>
-      </div>
-      <div class="link-box admit">
-        <a href="https://neet.nta.nic.in/" target="_blank">NTA NEET 2025 Admit Card</a>
-        <span>Admit Card</span>
-      </div>
-    </div>
-  </main>
+  <!-- Filter Buttons -->
+  <div id="filter-buttons">
+    <button onclick="filterJobs('all')">All</button>
+    <button onclick="filterJobs('form')">Online Form</button>
+    <button onclick="filterJobs('admit')">Admit Card</button>
+    <button onclick="filterJobs('result')">Result</button>
+  </div>
 
+  <!-- Job List -->
+  <div class="links" id="linksContainer">
+    <div class="link-box form">
+      <a href="https://www.csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
+      <button class="apply-btn" onclick="window.open('https://www.csbc.bih.nic.in/', '_blank')">Apply Now</button>
+    </div>
+    <div class="link-box form">
+      <a href="https://ssc.nic.in/" target="_blank">SSC CGL 2025 Notification</a>
+      <button class="apply-btn" onclick="window.open('https://ssc.nic.in/', '_blank')">Apply Now</button>
+    </div>
+    <div class="link-box result">
+      <a href="https://upsc.gov.in/" target="_blank">UPSC NDA 1 Result 2025</a>
+    </div>
+    <div class="link-box form">
+      <a href="https://upbasiceduboard.gov.in/" target="_blank">UPTET Online Form 2025</a>
+      <button class="apply-btn" onclick="window.open('https://upbasiceduboard.gov.in/', '_blank')">Apply Now</button>
+    </div>
+    <div class="link-box result">
+      <a href="https://www.rrbcdg.gov.in/" target="_blank">Railway Group D Result</a>
+    </div>
+    <div class="link-box admit">
+      <a href="https://ssc.nic.in/" target="_blank">SSC MTS Tier 1 Admit Card</a>
+    </div>
+    <div class="link-box form">
+      <a href="https://ctet.nic.in/" target="_blank">CTET July 2025 Online Form</a>
+      <button class="apply-btn" onclick="window.open('https://ctet.nic.in/', '_blank')">Apply Now</button>
+    </div>
+    <div class="link-box result">
+      <a href="https://delhipolice.gov.in/" target="_blank">Delhi Police Head Constable Result</a>
+    </div>
+    <div class="link-box admit">
+      <a href="https://neet.nta.nic.in/" target="_blank">NTA NEET 2025 Admit Card</a>
+    </div>
+    <div class="link-box form">
+      <a href="https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf" target="_blank">CET B.Ed Answer Key</a>
+      <button class="apply-btn" onclick="window.open('https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf', '_blank')">Apply Now</button>
+    </div>
+  </div>
+
+  <!-- Script -->
   <script>
     function filterJobs(category) {
       const boxes = document.querySelectorAll('.link-box');
@@ -183,12 +209,17 @@
     function searchJobs() {
       const input = document.getElementById('search-input').value.toLowerCase();
       const boxes = document.querySelectorAll('.link-box');
+
       boxes.forEach(box => {
         const text = box.textContent.toLowerCase();
         box.style.display = text.includes(input) ? 'block' : 'none';
       });
     }
   </script>
+
+  <footer>
+    &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
+  </footer>
 
 </body>
 </html>
