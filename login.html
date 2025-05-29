@@ -1,78 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Login - Ujjawal Jobs Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .login-container {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      background-color: #2c3e50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #34495e;
-    }
-
-    .error {
-      color: red;
-      margin-top: 10px;
-      text-align: center;
-    }
+    body { font-family: Arial, sans-serif; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    h2 { margin-bottom: 20px; }
+    input { padding: 10px; margin: 5px 0; width: 250px; border: 1px solid #ccc; border-radius: 5px; }
+    button { padding: 10px 20px; border: none; background: #007bff; color: white; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    #error { color: red; margin-top: 10px; }
   </style>
 </head>
 <body>
+  <h2>Login / Signup</h2>
+  <input type="email" id="email" placeholder="Enter email" />
+  <input type="password" id="password" placeholder="Enter password" />
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Sign Up</button>
+  <div id="error"></div>
 
-  <div class="login-container">
-    <h2>Login to Ujjawal Jobs</h2>
-    <input type="email" id="email" placeholder="Enter email" required />
-    <input type="password" id="password" placeholder="Enter password" required />
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <p class="error" id="error"></p>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
@@ -84,51 +34,22 @@
       measurementId: "G-R1EBJHZ8KP"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
 
     function login() {
-      const email = document.getElementById('email').value.trim();
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const error = document.getElementById('error');
-
-      if (!email || !password) {
-        error.textContent = "Please fill in both fields.";
-        return;
-      }
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch(err => {
-          error.textContent = err.message;
-        });
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => window.location.href = "index.html")
+        .catch(error => document.getElementById('error').textContent = error.message);
     }
 
     function signup() {
-      const email = document.getElementById('email').value.trim();
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const error = document.getElementById('error');
-
-      if (!email || !password) {
-        error.textContent = "Please fill in both fields.";
-        return;
-      }
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch(err => {
-          error.textContent = err.message;
-        });
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(() => window.location.href = "index.html")
+        .catch(error => document.getElementById('error').textContent = error.message);
     }
-
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        window.location.href = "index.html";
-      }
-    });
   </script>
 </body>
 </html>
