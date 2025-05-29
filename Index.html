@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ujjawal Jobs Portal</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -18,6 +20,18 @@
       color: white;
       padding: 15px 20px;
       text-align: center;
+      position: relative;
+    }
+    #logout {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
     }
     marquee {
       background-color: #fff3cd;
@@ -35,20 +49,20 @@
       font-size: 28px;
       text-align: center;
     }
-    #search-bar, #filter-buttons, #auth-section {
+    #search-bar,
+    #filter-buttons {
       text-align: center;
       margin-bottom: 15px;
     }
-    #search-input, input[type="email"], input[type="password"] {
+    #search-input {
       padding: 10px;
       width: 80%;
       max-width: 400px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      margin: 5px 0;
     }
-    #filter-buttons button, #auth-section button {
+    #filter-buttons button {
       margin: 5px;
       padding: 8px 16px;
       border: none;
@@ -100,41 +114,31 @@
       font-size: 14px;
       color: #666;
     }
-    #message {
-      color: red;
-      font-weight: bold;
-    }
     @media (min-width: 768px) {
-      h1 { font-size: 36px; }
-      #search-input { width: 50%; }
-      .link-box { width: 45%; }
+      h1 {
+        font-size: 36px;
+      }
+      #search-input {
+        width: 50%;
+      }
+      .link-box {
+        width: 45%;
+      }
     }
   </style>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
   <header>
     <h1>Ujjawal Jobs Portal</h1>
+    <button id="logout" onclick="logout()">Logout</button>
   </header>
 
+  <!-- Running Headline -->
   <marquee behavior="scroll" direction="left" scrollamount="5">
     🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">CDS 2025</a> |
     💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
   </marquee>
-
-  <!-- Auth Section -->
-  <div id="auth-section">
-    <h3>Login or Sign Up</h3>
-    <input type="email" id="email" placeholder="Enter your email" />
-    <input type="password" id="password" placeholder="Enter your password" />
-    <br />
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <div id="message"></div>
-  </div>
 
   <!-- Search Bar -->
   <div id="search-bar">
@@ -149,7 +153,7 @@
     <button onclick="filterJobs('result')">Result</button>
   </div>
 
-  <!-- Job Listings -->
+  <!-- Job List -->
   <div class="links" id="linksContainer">
     <div class="link-box form">
       <a href="https://www.csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
@@ -188,81 +192,59 @@
     </div>
   </div>
 
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+      projectId: "ujjawal-jobs-portal",
+      storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+      messagingSenderId: "746809559960",
+      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+      measurementId: "G-R1EBJHZ8KP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Protect page
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+
+    // Job filter functions
+    function filterJobs(category) {
+      const boxes = document.querySelectorAll('.link-box');
+      boxes.forEach(box => {
+        const matchCategory = box.classList.contains(category);
+        box.style.display = (category === 'all' || matchCategory) ? 'block' : 'none';
+      });
+    }
+
+    function searchJobs() {
+      const input = document.getElementById('search-input').value.toLowerCase();
+      const boxes = document.querySelectorAll('.link-box');
+      boxes.forEach(box => {
+        const text = box.textContent.toLowerCase();
+        box.style.display = text.includes(input) ? 'block' : 'none';
+      });
+    }
+  </script>
+
   <footer>
     &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
   </footer>
 
- <!-- Firebase App SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-<!-- Firebase Config -->
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
-    authDomain: "ujjawal-jobs-portal.firebaseapp.com",
-    projectId: "ujjawal-jobs-portal",
-    storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
-    messagingSenderId: "746809559960",
-    appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
-    measurementId: "G-R1EBJHZ8KP"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-</script>
-
-<!-- Login/Signup UI -->
-<div style="max-width: 400px; margin: 20px auto; padding: 15px; border: 1px solid #ccc; border-radius: 8px;">
-  <h3>Login / Signup</h3>
-  <input type="email" id="email" placeholder="Email" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
-  <input type="password" id="password" placeholder="Password" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
-  <button onclick="signup()" style="width: 100%; padding: 10px; margin-bottom: 5px; background: green; color: white;">Sign Up</button>
-  <button onclick="login()" style="width: 100%; padding: 10px; background: blue; color: white;">Login</button>
-  <p id="authMsg" style="color: red; text-align: center; margin-top: 10px;"></p>
-</div>
-
-<!-- Auth Script -->
-<script>
-  function signup() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) {
-      document.getElementById("authMsg").textContent = "Please enter email and password.";
-      return;
-    }
-
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        document.getElementById("authMsg").style.color = "green";
-        document.getElementById("authMsg").textContent = "Signup successful!";
-      })
-      .catch(error => {
-        document.getElementById("authMsg").style.color = "red";
-        document.getElementById("authMsg").textContent = error.message;
-      });
-  }
-
-  function login() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) {
-      document.getElementById("authMsg").textContent = "Please enter email and password.";
-      return;
-    }
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then(user => {
-        document.getElementById("authMsg").style.color = "green";
-        document.getElementById("authMsg").textContent = "Login successful!";
-      })
-      .catch(error => {
-        document.getElementById("authMsg").style.color = "red";
-        document.getElementById("authMsg").textContent = error.message;
-      });
-  }
-</script>
 </body>
 </html>
