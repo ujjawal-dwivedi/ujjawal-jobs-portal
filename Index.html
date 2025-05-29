@@ -2,178 +2,245 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ujjawal Jobs Portal</title>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f9f9f9;
+      background-color: #f8f9fa;
+      color: #333;
+      padding: 0 10px;
     }
 
     header {
-      background-color: #2c3e50;
+      background-color: #343a40;
       color: white;
-      padding: 20px;
+      padding: 15px 20px;
       text-align: center;
-      position: relative;
-    }
-
-    header button {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
     }
 
     marquee {
-      background-color: #3498db;
-      color: white;
+      background-color: #fff3cd;
+      color: #856404;
       padding: 10px;
       font-weight: bold;
     }
 
-    .job-listings {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .job-card {
-      background-color: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .job-card h3 {
-      margin-top: 0;
-      color: #2c3e50;
-    }
-
-    .job-card p {
-      color: #555;
-    }
-
-    .job-card a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 12px;
-      background-color: #3498db;
-      color: white;
+    marquee a {
+      color: #007bff;
       text-decoration: none;
+      margin: 0 10px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    #search-bar,
+    #filter-buttons {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    #search-input {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    #filter-buttons button {
+      margin: 5px;
+      padding: 8px 16px;
+      border: none;
+      background-color: #007bff;
+      color: white;
       border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .links {
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .link-box {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .link-box:hover {
+      transform: scale(1.01);
+    }
+
+    .link-box a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .apply-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
     footer {
       text-align: center;
-      padding: 15px;
-      background-color: #eee;
-      color: #555;
+      margin: 30px 0 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .hidden { display: none; }
+
+    #login-section {
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    #login-section input {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    #login-section button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #logoutBtn {
+      display: block;
+      margin: 20px auto;
+      background-color: #dc3545;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Ujjawal Jobs Portal</h1>
-    <button onclick="logout()">Logout</button>
-  </header>
+  <!-- Login Section -->
+  <div id="login-section">
+    <h2>Login / Signup</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <p class="error" id="error-msg"></p>
+  </div>
 
-  <marquee>🎯 Latest Government Jobs | Apply Now at Official Sites</marquee>
+  <!-- Job Content Section -->
+  <div id="content-section" class="hidden">
+    <header>
+      <h1>Ujjawal Jobs Portal</h1>
+    </header>
 
-  <section class="job-listings">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+      🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">CDS 2025</a> |
+      💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
+    </marquee>
 
-    <div class="job-card">
-      <h3>UPSC Civil Services Exam 2025</h3>
-      <p>Join IAS, IPS, IFS through UPSC CSE 2025.</p>
-      <a href="https://www.upsc.gov.in/" target="_blank">Apply Now</a>
+    <div id="search-bar">
+      <input type="text" id="search-input" onkeyup="searchJobs()" placeholder="Search for a job...">
     </div>
 
-    <div class="job-card">
-      <h3>SSC CGL 2025</h3>
-      <p>Recruitment for Group B & C posts under central government.</p>
-      <a href="https://ssc.nic.in/" target="_blank">Apply Now</a>
+    <div id="filter-buttons">
+      <button onclick="filterJobs('all')">All</button>
+      <button onclick="filterJobs('form')">Online Form</button>
+      <button onclick="filterJobs('admit')">Admit Card</button>
+      <button onclick="filterJobs('result')">Result</button>
     </div>
 
-    <div class="job-card">
-      <h3>IBPS PO 2025</h3>
-      <p>Probationary Officer vacancies in public sector banks.</p>
-      <a href="https://www.ibps.in/" target="_blank">Apply Now</a>
+    <div class="links" id="linksContainer">
+      <div class="link-box form">
+        <a href="https://www.csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
+        <button class="apply-btn" onclick="window.open('https://www.csbc.bih.nic.in/', '_blank')">Apply Now</button>
+      </div>
+      <div class="link-box form">
+        <a href="https://ssc.nic.in/" target="_blank">SSC CGL 2025 Notification</a>
+        <button class="apply-btn" onclick="window.open('https://ssc.nic.in/', '_blank')">Apply Now</button>
+      </div>
+      <div class="link-box result">
+        <a href="https://upsc.gov.in/" target="_blank">UPSC NDA 1 Result 2025</a>
+      </div>
+      <div class="link-box form">
+        <a href="https://upbasiceduboard.gov.in/" target="_blank">UPTET Online Form 2025</a>
+        <button class="apply-btn" onclick="window.open('https://upbasiceduboard.gov.in/', '_blank')">Apply Now</button>
+      </div>
+      <div class="link-box result">
+        <a href="https://www.rrbcdg.gov.in/" target="_blank">Railway Group D Result</a>
+      </div>
+      <div class="link-box admit">
+        <a href="https://ssc.nic.in/" target="_blank">SSC MTS Tier 1 Admit Card</a>
+      </div>
+      <div class="link-box form">
+        <a href="https://ctet.nic.in/" target="_blank">CTET July 2025 Online Form</a>
+        <button class="apply-btn" onclick="window.open('https://ctet.nic.in/', '_blank')">Apply Now</button>
+      </div>
+      <div class="link-box result">
+        <a href="https://delhipolice.gov.in/" target="_blank">Delhi Police Head Constable Result</a>
+      </div>
+      <div class="link-box admit">
+        <a href="https://neet.nta.nic.in/" target="_blank">NTA NEET 2025 Admit Card</a>
+      </div>
+      <div class="link-box form">
+        <a href="https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf" target="_blank">CET B.Ed Answer Key</a>
+        <button class="apply-btn" onclick="window.open('https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf', '_blank')">Apply Now</button>
+      </div>
     </div>
 
-    <div class="job-card">
-      <h3>Indian Army Agniveer Recruitment</h3>
-      <p>Serve the nation through the Indian Army Agniveer scheme.</p>
-      <a href="https://joinindianarmy.nic.in/" target="_blank">Apply Now</a>
-    </div>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+    <footer>&copy; 2025 Ujjawal Jobs Portal. All rights reserved.</footer>
+  </div>
 
-    <div class="job-card">
-      <h3>Railway Group D Recruitment</h3>
-      <p>Vacancies for Track Maintainer, Helper, etc.</p>
-      <a href="https://www.rrbcdg.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>UP Police Constable 2025</h3>
-      <p>Apply for Constable and Sub-Inspector positions.</p>
-      <a href="https://uppbpb.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>NDA Exam 2025</h3>
-      <p>Join Indian Defence Forces through NDA.</p>
-      <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>CDS Exam 2025</h3>
-      <p>Combined Defence Services recruitment by UPSC.</p>
-      <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>Delhi Police Recruitment 2025</h3>
-      <p>Vacancy for Constable and Head Constable posts.</p>
-      <a href="https://delhipolice.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>BSF Recruitment 2025</h3>
-      <p>Various technical and non-technical roles.</p>
-      <a href="https://rectt.bsf.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>ISRO Technician Recruitment</h3>
-      <p>Technician-B and Assistant posts in ISRO units.</p>
-      <a href="https://www.isro.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-    <div class="job-card">
-      <h3>DRDO Apprentice Recruitment</h3>
-      <p>Apply for Apprentice training in DRDO labs.</p>
-      <a href="https://drdo.gov.in/" target="_blank">Apply Now</a>
-    </div>
-
-  </section>
-
-  <footer>
-    &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
-  </footer>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
       authDomain: "ujjawal-jobs-portal.firebaseapp.com",
@@ -184,19 +251,62 @@
       measurementId: "G-R1EBJHZ8KP"
     };
     firebase.initializeApp(firebaseConfig);
+
     const auth = firebase.auth();
 
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => showContent())
+        .catch(error => {
+          document.getElementById("error-msg").textContent = error.message;
+        });
+    }
+
+    function signup() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(() => showContent())
+        .catch(error => {
+          document.getElementById("error-msg").textContent = error.message;
+        });
+    }
 
     function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html";
+      firebase.auth().signOut().then(() => {
+        document.getElementById("content-section").classList.add("hidden");
+        document.getElementById("login-section").classList.remove("hidden");
+      });
+    }
+
+    function showContent() {
+      document.getElementById("login-section").classList.add("hidden");
+      document.getElementById("content-section").classList.remove("hidden");
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) showContent();
+    });
+
+    function filterJobs(category) {
+      const boxes = document.querySelectorAll('.link-box');
+      boxes.forEach(box => {
+        const matchCategory = box.classList.contains(category);
+        box.style.display = (category === 'all' || matchCategory) ? 'block' : 'none';
+      });
+    }
+
+    function searchJobs() {
+      const input = document.getElementById('search-input').value.toLowerCase();
+      const boxes = document.querySelectorAll('.link-box');
+      boxes.forEach(box => {
+        const text = box.textContent.toLowerCase();
+        box.style.display = text.includes(input) ? 'block' : 'none';
       });
     }
   </script>
 </body>
 </html>
+ 
