@@ -8,7 +8,6 @@
     * {
       box-sizing: border-box;
     }
-
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -16,39 +15,33 @@
       color: #333;
       padding: 0 10px;
     }
-
     header {
       background-color: #343a40;
       color: white;
       padding: 15px 20px;
       text-align: center;
     }
-
     marquee {
       background-color: #fff3cd;
       color: #856404;
       padding: 10px;
       font-weight: bold;
     }
-
     marquee a {
       color: #007bff;
       text-decoration: none;
       margin: 0 10px;
     }
-
     h1 {
       margin: 20px 0;
       font-size: 28px;
       text-align: center;
     }
-
     #search-bar,
     #filter-buttons {
       text-align: center;
       margin-bottom: 15px;
     }
-
     #search-input {
       padding: 10px;
       width: 80%;
@@ -57,7 +50,6 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     #filter-buttons button {
       margin: 5px;
       padding: 8px 16px;
@@ -68,7 +60,6 @@
       cursor: pointer;
       font-size: 14px;
     }
-
     .links {
       max-width: 900px;
       margin: auto;
@@ -77,7 +68,6 @@
       gap: 15px;
       justify-content: center;
     }
-
     .link-box {
       background-color: white;
       padding: 15px;
@@ -87,11 +77,9 @@
       max-width: 400px;
       transition: transform 0.2s ease-in-out;
     }
-
     .link-box:hover {
       transform: scale(1.01);
     }
-
     .link-box a {
       text-decoration: none;
       color: #007bff;
@@ -99,7 +87,6 @@
       display: block;
       margin-bottom: 10px;
     }
-
     .apply-btn {
       background-color: #28a745;
       color: white;
@@ -109,61 +96,65 @@
       cursor: pointer;
       font-size: 14px;
     }
-
     footer {
       text-align: center;
       margin: 30px 0 10px;
       font-size: 14px;
       color: #666;
     }
-
+    #auth-section {
+      text-align: center;
+      margin-top: 20px;
+    }
+    input.auth-input {
+      padding: 10px;
+      margin: 5px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button.auth-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
     @media (min-width: 768px) {
       h1 {
         font-size: 36px;
       }
-
       #search-input {
         width: 50%;
       }
-
       .link-box {
         width: 45%;
       }
     }
   </style>
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
-  authDomain: "ujjawal-jobs-portal.firebaseapp.com",
-  projectId: "ujjawal-jobs-portal",
-  storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
-  messagingSenderId: "746809559960",
-  appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
-  measurementId: "G-R1EBJHZ8KP"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 </head>
 <body>
-
   <header>
     <h1>Ujjawal Jobs Portal</h1>
   </header>
 
-  <!-- Running Headline -->
   <marquee behavior="scroll" direction="left" scrollamount="5">
     🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">CDS 2025</a> |
     💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
   </marquee>
+
+  <!-- Firebase Auth Section -->
+  <div id="auth-section">
+    <input type="email" id="email" class="auth-input" placeholder="Email" />
+    <input type="password" id="password" class="auth-input" placeholder="Password" />
+    <br />
+    <button class="auth-btn" onclick="login()">Login</button>
+    <button class="auth-btn" onclick="signup()">Sign Up</button>
+    <p id="user-info"></p>
+  </div>
 
   <!-- Search Bar -->
   <div id="search-bar">
@@ -217,7 +208,43 @@ const analytics = getAnalytics(app);
     </div>
   </div>
 
-  <!-- Script -->
+  <!-- Firebase & Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+      projectId: "ujjawal-jobs-portal",
+      storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+      messagingSenderId: "746809559960",
+      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+      measurementId: "G-R1EBJHZ8KP"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(user => {
+          document.getElementById('user-info').innerText = "Logged in as: " + user.user.email;
+        })
+        .catch(error => alert(error.message));
+    }
+
+    function signup() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          document.getElementById('user-info').innerText = "Account created for: " + user.user.email;
+        })
+        .catch(error => alert(error.message));
+    }
+  </script>
+
   <script>
     function filterJobs(category) {
       const boxes = document.querySelectorAll('.link-box');
@@ -230,7 +257,6 @@ const analytics = getAnalytics(app);
     function searchJobs() {
       const input = document.getElementById('search-input').value.toLowerCase();
       const boxes = document.querySelectorAll('.link-box');
-
       boxes.forEach(box => {
         const text = box.textContent.toLowerCase();
         box.style.display = text.includes(input) ? 'block' : 'none';
@@ -241,6 +267,5 @@ const analytics = getAnalytics(app);
   <footer>
     &copy; 2025 Ujjawal Jobs Portal. All rights reserved.
   </footer>
-
 </body>
 </html>
