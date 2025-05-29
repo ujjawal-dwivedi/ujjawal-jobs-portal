@@ -7,61 +7,72 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background: #f4f4f4;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
     .login-container {
       background: white;
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      width: 90%;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
       max-width: 400px;
+    }
+
+    h2 {
       text-align: center;
+      color: #333;
     }
 
     input {
-      width: 90%;
+      width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin-top: 15px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 5px;
     }
 
     button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      border: none;
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #2c3e50;
       color: white;
-      border-radius: 6px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
 
-    p {
+    button:hover {
+      background-color: #34495e;
+    }
+
+    .error {
       color: red;
-      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+
   <div class="login-container">
-    <h2>Login to Ujjawal Jobs Portal</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <br/>
+    <h2>Login to Ujjawal Jobs</h2>
+    <input type="email" id="email" placeholder="Enter email" required />
+    <input type="password" id="password" placeholder="Enter password" required />
     <button onclick="login()">Login</button>
     <button onclick="signup()">Sign Up</button>
-    <p id="error"></p>
+    <p class="error" id="error"></p>
   </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
@@ -72,33 +83,52 @@
       appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
       measurementId: "G-R1EBJHZ8KP"
     };
-
-    const app = firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     function login() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const error = document.getElementById('error');
+
+      if (!email || !password) {
+        error.textContent = "Please fill in both fields.";
+        return;
+      }
+
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
           window.location.href = "index.html";
         })
         .catch(err => {
-          document.getElementById("error").innerText = err.message;
+          error.textContent = err.message;
         });
     }
 
     function signup() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const error = document.getElementById('error');
+
+      if (!email || !password) {
+        error.textContent = "Please fill in both fields.";
+        return;
+      }
+
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
           window.location.href = "index.html";
         })
         .catch(err => {
-          document.getElementById("error").innerText = err.message;
+          error.textContent = err.message;
         });
     }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        window.location.href = "index.html";
+      }
+    });
   </script>
 </body>
 </html>
