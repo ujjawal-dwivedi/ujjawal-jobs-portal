@@ -161,6 +161,75 @@
       font-size: 14px;
       margin-top: 5px;
     }
+    .content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Main job content */
+.main-content {
+  flex: 1;
+}
+
+/* Sidebar floated right */
+.sidebar {
+  width: 250px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-left: 2px solid #ddd;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  color: #0056b3;
+}
+  .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .dark-mode a {
+    color: #90caf9;
+  }
+
+  .dark-mode .job-card {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+  }
+
+  .dark-mode header,
+  .dark-mode footer {
+    background-color: #1a1a1a;
+    color: white;
+  }
   </style>
 </head>
 <body>
@@ -181,15 +250,14 @@
       <h1>Ujjawal Jobs Portal</h1>
     </header>
 
-    <marquee behavior="scroll" direction="left" scrollamount="5">
-      🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank">CDS 2025</a> |
-      💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank">NDA 2025</a>
-    </marquee>
+    <marquee behavior="scroll" direction="left" scrollamount="6" style="background: #f8f9fa; padding: 10px; font-weight: bold; font-size: 16px; color: #333;">
+  🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank" style="color: #007bff;">CDS 2025</a> |
+  💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank" style="color: #007bff;">NDA 2025</a>
+</marquee>
 
     <div id="search-bar">
       <input type="text" id="search-input" onkeyup="searchJobs()" placeholder="Search for a job...">
     </div>
-
     <div id="filter-buttons">
       <button onclick="filterJobs('all')">All</button>
       <button onclick="filterJobs('form')">Online Form</button>
@@ -269,7 +337,22 @@
         <button class="apply-btn" onclick="window.open('https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf', '_blank')">Apply Now</button>
       </div>
     </div>
+<div class="content-wrapper">
+  <div class="main-content">
+    <!-- Your job listings and other content -->
+  </div>
 
+  <div class="sidebar">
+    <h3>Quick Links</h3>
+    <ul>
+      <li><a href="#">SSC Jobs</a></li>
+      <li><a href="#">UPSC Jobs</a></li>
+      <li><a href="#">Admit Cards</a></li>
+      <li><a href="#">Sarkari Results</a></li>
+      <li><a href="https://t.me/govtjobinstantupdate" target="_blank">Join Telegram</a></li>
+    </ul>
+  </div>
+</div>
     <button id="logoutBtn" onclick="logout()">Logout</button>
     <footer>&copy; 2025 Ujjawal Jobs Portal. All rights reserved.</footer>
   </div>
@@ -342,6 +425,54 @@
       });
     }
   </script>
+<section style="text-align: center; margin: 30px 0;">
+  <h2>📢 Join Our Official Groups</h2>
+  <a href="https://chat.whatsapp.com/DRjXF4crY2hKtwRWetZKkA" target="_blank" style="text-decoration: none; margin: 10px;">
+    <button style="background-color: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;">
+      Join WhatsApp Group
+    </button>
+  </a>
+</section>
+<!-- Running Headline -->
+<div style="background: #ffeb3b; padding: 10px; overflow: hidden; white-space: nowrap;">
+  <marquee behavior="scroll" direction="left" scrollamount="6">
+    NDA 2025 Notification Out – Apply Now | CDS II 2025 Applications Open!
+  </marquee>
+</div>
+
+<!-- About Section -->
+<section id="about" style="padding: 20px; background-color: #f1f1f1;">
+  <h2>About Us</h2>
+  <p>We are committed to providing the latest government job updates, admit cards, results, and more to help aspirants stay informed and act fast. Our platform ensures reliable and fast updates every day.</p>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" style="padding: 20px; background-color: #ffffff;">
+  <h2>Contact Us</h2>
+  <p>Have questions or suggestions? Reach out to us anytime:</p>
+  <ul>
+    <li>Email: <a href="ujjawaldwivedi620@gmail.com">ujjawaldwivedi620@gmail.com</a></li>
+    <li>Telegram: <a href="https://t.me/govtjobinstantupdate" target="_blank" rel="noopener noreferrer">Join our Telegram Channel</a></li>
+  </ul>
+</section>
+<!-- Dark Mode Toggle Button -->
+<button onclick="toggleDarkMode()" style="position: fixed; top: 10px; right: 10px; z-index: 9999; padding: 8px 16px; border-radius: 6px; border: none; background-color: #444; color: white; cursor: pointer;">
+  🌙 Dark Mode
+</button>
+
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+  }
+
+  // Load saved mode from previous visit
+  window.onload = () => {
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+  };
+</script>
 </body>
 </html>
  
