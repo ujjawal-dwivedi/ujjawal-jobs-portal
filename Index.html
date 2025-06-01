@@ -4,8 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ujjawal Jobs Portal</title>
+<!-- Primary Meta Tags -->
+<title>Ujjawal Jobs Portal - Latest Government Jobs, Admit Cards & Results</title>
+<meta name="title" content="Ujjawal Jobs Portal - Latest Government Jobs, Admit Cards & Results">
+<meta name="description" content="Find latest Sarkari Naukri, government job notifications, admit cards, and result updates in India. Apply online now at Ujjawal Jobs Portal.">
+<meta name="keywords" content="government jobs, sarkari result, sarkari naukri, latest job, admit card, results, ujjawal jobs">
+<meta name="robots" content="index, follow">
+<meta name="language" content="English">
+<meta name="author" content="Ujjawal Jobs Portal Team">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ujjawal-jobs.netlify.app/">
+<meta property="og:title" content="Ujjawal Jobs Portal - Latest Government Jobs">
+<meta property="og:description" content="Find latest Sarkari Naukri, admit cards & results. Apply online now.">
+<meta property="og:image" content="https://ujjawal-jobs.netlify.app/images/banner.png">
+  <title>Ujjawal Jobs - Latest Government Jobs, Admit Cards, Results</title>
+  <meta name="description" content="Get the latest government job updates, admit cards, and results. Apply now with official links.">
+  <meta name="keywords" content="sarkari job, government jobs, admit card, result, ujjawal jobs, sarkari result, free job alert">
+  <meta name="author" content="Ujjawal Jobs">
+  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Open Graph for social media -->
+  <meta property="og:title" content="Ujjawal Jobs - Govt Job Updates">
+  <meta property="og:description" content="Get the latest government job updates, admit cards, and results.">
+  <meta property="og:url" content="https://ujjawal-jobs.netlify.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://ujjawal-jobs.netlify.app/banner.jpg"> <!-- Optional: if you have a banner -->
 
-  <!-- Firebase SDK -->
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="canonical" href="https://ujjawal-jobs.netlify.app/">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
@@ -472,7 +504,22 @@
       document.body.classList.add('dark-mode');
     }
   };
+  function forgotPassword() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+      alert("Please enter your registered email address first.");
+      return;
+    }
+
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Password reset link sent to your email.");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Error: " + error.message);
+      });
+  }
 </script>
 </body>
 </html>
- 
