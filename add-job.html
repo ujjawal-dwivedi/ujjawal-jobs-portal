@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Add Job - Ujjawal Jobs</title>
+  <style>
+    body { font-family: sans-serif; background: #f2f2f2; padding: 30px; text-align: center; }
+    input, button { padding: 10px; margin: 10px; width: 80%; max-width: 400px; }
+    .box { background: white; padding: 20px; border-radius: 10px; display: inline-block; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Add Job</h2>
+    <input type="text" id="jobTitle" placeholder="Job Title"><br>
+    <input type="text" id="jobLink" placeholder="Apply Link"><br>
+    <button onclick="addJob()">Submit</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+      projectId: "ujjawal-jobs-portal",
+      storageBucket: "ujjawal-jobs-portal.appspot.com",
+      messagingSenderId: "746809559960",
+      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+      measurementId: "G-R1EBJHZ8KP",
+      databaseURL: "https://ujjawal-jobs-portal-default-rtdb.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const jobsRef = db.ref("jobs");
+
+    function addJob() {
+      const title = document.getElementById("jobTitle").value;
+      const link = document.getElementById("jobLink").value;
+      if (title && link) {
+        jobsRef.push({ title, link });
+        document.getElementById("status").innerText = "✅ Job Added!";
+        document.getElementById("jobTitle").value = "";
+        document.getElementById("jobLink").value = "";
+      } else {
+        document.getElementById("status").innerText = "❗ Please enter title and link.";
+      }
+    }
+  </script>
+
+</body>
+</html>
