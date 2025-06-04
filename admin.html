@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel - Ujjawal Jobs</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, button { display: block; margin-top: 10px; width: 100%; padding: 10px; }
+    #postForm { display: none; }
+  </style>
+</head>
+<body>
+  <h2>Admin Login</h2>
+  <input type="email" id="email" placeholder="Admin Email">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+
+  <div id="postForm">
+    <h3>Post a Job</h3>
+    <input type="text" id="title" placeholder="Job Title">
+    <input type="text" id="link" placeholder="Apply Link">
+    <input type="text" id="lastDate" placeholder="Last Date">
+    <input type="text" id="type" placeholder="Job Type (e.g. Govt, Private)">
+    <button onclick="postJob()">Post Job</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+      projectId: "ujjawal-jobs-portal",
+      storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+      messagingSenderId: "746809559960",
+      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+      measurementId: "G-R1EBJHZ8KP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Logged in successfully!");
+          document.getElementById("postForm").style.display = "block";
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function postJob() {
+      const job = {
+        title: document.getElementById("title").value,
+        link: document.getElementById("link").value,
+        lastDate: document.getElementById("lastDate").value,
+        type: document.getElementById("type").value,
+        postedAt: new Date()
+      };
+
+      db.collection("jobs").add(job)
+        .then(() => {
+          alert("Job posted successfully!");
+          document.getElementById("title").value = '';
+          document.getElementById("link").value = '';
+          document.getElementById("lastDate").value = '';
+          document.getElementById("type").value = '';
+        })
+        .catch(err => alert("Error posting job: " + err.message));
+    }
+  </script>
+</body>
+</html>
