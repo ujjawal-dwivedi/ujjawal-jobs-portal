@@ -73,6 +73,7 @@
 <body>
   <header>Ujjawal Jobs Portal</header>
   <div class="container">
+    <div id="jobs-container"></div>
 
     <div class="box">
       <h2>Result</h2>
@@ -230,5 +231,37 @@
     </script>
 
   </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+    authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+    projectId: "ujjawal-jobs-portal",
+    storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+    messagingSenderId: "746809559960",
+    appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+    measurementId: "G-R1EBJHZ8KP"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const container = document.getElementById("jobs-container");
+  db.collection("jobs").orderBy("postedAt", "desc").onSnapshot(snapshot => {
+    container.innerHTML = '';
+    snapshot.forEach(doc => {
+      const job = doc.data();
+      container.innerHTML += `
+        <div style="border:1px solid #ccc; padding:15px; margin-bottom:10px; border-radius:5px;">
+          <h3>${job.title}</h3>
+          <p>Type: ${job.type}</p>
+          <p>Last Date: ${job.lastDate}</p>
+          <a href="${job.link}" target="_blank">Apply Now</a>
+        </div>
+      `;
+    });
+  });
+    </script>
 </body>
 </html>
