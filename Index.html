@@ -360,6 +360,21 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
     NDA 2025 Notification Out – Apply Now | CDS II 2025 Applications Open!
   </marquee>
 </div>
+  <script>
+  document.getElementById("searchBtn").addEventListener("click", function () {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const jobs = document.querySelectorAll(".job-card"); // Assuming job cards
+
+    jobs.forEach(job => {
+      const content = job.textContent.toLowerCase();
+      if (content.includes(query)) {
+        job.style.display = "block";
+      } else {
+        job.style.display = "none";
+      }
+    });
+  });
+  </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5513095003749378"
      crossorigin="anonymous"></script>
 </script>
