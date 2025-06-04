@@ -1,392 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="description" content="Ujjawal Jobs is a secure government job portal. Login to view and apply for jobs using Firebase Authentication.">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ujjawal Jobs Portal</title>
-<!-- Primary Meta Tags -->
-<title>Ujjawal Jobs Portal - Latest Government Jobs, Admit Cards & Results</title>
-<meta name="title" content="Ujjawal Jobs Portal - Latest Government Jobs, Admit Cards & Results">
-<meta name="description" content="Find latest Sarkari Naukri, government job notifications, admit cards, and result updates in India. Apply online now at Ujjawal Jobs Portal.">
-<meta name="keywords" content="government jobs, sarkari result, sarkari naukri, latest job, admit card, results, ujjawal jobs">
-<meta name="robots" content="index, follow">
-<meta name="language" content="English">
-<meta name="author" content="Ujjawal Jobs Portal Team">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ujjawal-jobs.netlify.app/">
-<meta property="og:title" content="Ujjawal Jobs Portal - Latest Government Jobs">
-<meta
-<meta name="google-adsense-account" content="ca-pub-5513095003749378">
-<meta
-property="og:description" content="Find latest Sarkari Naukri, admit cards & results. Apply online now.">
-<meta property="og:image" content="https://ujjawal-jobs.netlify.app/images/banner.png">
-  <title>Ujjawal Jobs - Latest Government Jobs, Admit Cards, Results</title>
-  <meta name="description" content="Get the latest government job updates, admit cards, and results. Apply now with official links.">
-  <meta name="keywords" content="sarkari job, government jobs, admit card, result, ujjawal jobs, sarkari result, free job alert">
+  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+  <meta name="description" content="Find latest government jobs, admit cards, and results.">
+  <meta name="keywords" content="government jobs, sarkari result, job portal">
   <meta name="author" content="Ujjawal Jobs">
-  <meta name="robots" content="index, follow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Open Graph for social media -->
-  <meta property="og:title" content="Ujjawal Jobs - Govt Job Updates">
-  <meta property="og:description" content="Get the latest government job updates, admit cards, and results.">
-  <meta property="og:url" content="https://ujjawal-jobs.netlify.app/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://ujjawal-jobs.netlify.app/banner.jpg"> <!-- Optional: if you have a banner -->
 
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-</head>
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="canonical" href="https://ujjawal-jobs.netlify.app/">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" crossorigin="anonymous"></script>
 
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f8f9fa;
+      background: #f4f4f4;
       color: #333;
-      padding: 0 10px;
     }
-
     header {
-      background-color: #343a40;
+      background: #003366;
       color: white;
-      padding: 15px 20px;
+      padding: 15px;
       text-align: center;
     }
-
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo img {
+      height: 50px;
+      margin-right: 10px;
+    }
     marquee {
-      background-color: #fff3cd;
-      color: #856404;
+      background: #ffc107;
+      color: #000;
       padding: 10px;
       font-weight: bold;
     }
-
-    marquee a {
-      color: #007bff;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    h1 {
-      margin: 20px 0;
-      font-size: 28px;
+    .filter {
       text-align: center;
+      margin: 20px;
     }
-
-    #search-bar,
-    #filter-buttons {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    #search-input {
+    .filter input {
       padding: 10px;
-      width: 80%;
-      max-width: 400px;
-      font-size: 16px;
+      width: 250px;
+      max-width: 80%;
       border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    #filter-buttons button {
-      margin: 5px;
-      padding: 8px 16px;
-      border: none;
-      background-color: #007bff;
-      color: white;
       border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
     }
-
-    .links {
-      max-width: 900px;
-      margin: auto;
+    .jobs-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
       justify-content: center;
+      gap: 20px;
+      padding: 20px;
     }
-
-    .link-box {
-      background-color: white;
+    .job-card {
+      background: white;
       padding: 15px;
+      width: 300px;
       border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      transition: transform 0.2s ease-in-out;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-
-    .link-box:hover {
-      transform: scale(1.01);
+    .job-card h3 {
+      margin-top: 0;
     }
-
-    .link-box a {
-      text-decoration: none;
-      color: #007bff;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .apply-btn {
-      background-color: #28a745;
+    .job-card a {
+      display: inline-block;
+      margin-top: 10px;
+      background: #007bff;
       color: white;
-      border: none;
       padding: 8px 12px;
       border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
+      text-decoration: none;
     }
-
+    .job-card a:hover {
+      background: #0056b3;
+    }
     footer {
       text-align: center;
-      margin: 30px 0 10px;
-      font-size: 14px;
-      color: #666;
+      padding: 15px;
+      background: #003366;
+      color: white;
     }
-.sidebar {
-  width: 250px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-left: 2px solid #ddd;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 15px;
-  color: #333;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.sidebar h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: #007bff;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar ul li {
-  margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #007bff;
-  transition: color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-  color: #0056b3;
-}
-  .dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-  }
-
-  .dark-mode a {
-    color: #90caf9;
-  }
-
-  .dark-mode .job-card {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-  }
-
-  .dark-mode header,
-  .dark-mode footer {
-    background-color: #1a1a1a;
-    color: white;
-  }
   </style>
-  <meta name="title" content="Ujjawal Jobs – Latest Government Job Updates">
-<meta name="description" content="Find and apply for the latest government jobs, results, and admit cards. Secure login using Firebase Authentication.">
-<meta name="keywords" content="government jobs, sarkari jobs, latest jobs, admit card, results, ujjawal jobs">
-<meta name="author" content="Ujjawal Jobs Team">
-<meta name="robots" content="index, follow">
 </head>
 <body>
-    <header>
+
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="Ujjawal Jobs Logo">
       <h1>Ujjawal Jobs Portal</h1>
-    </header>
-
-    <marquee behavior="scroll" direction="left" scrollamount="6" style="background: #f8f9fa; padding: 10px; font-weight: bold; font-size: 16px; color: #333;">
-  🚀 Apply Now: <a href="https://www.upsc.gov.in/examinations/Combined-Defence-Services" target="_blank" style="color: #007bff;">CDS 2025</a> |
-  💥 Apply Now: <a href="https://www.upsc.gov.in/examinations/National-Defence-Academy" target="_blank" style="color: #007bff;">NDA 2025</a>
-</marquee>
-
-    <div id="search-bar">
-      <input type="text" id="search-input" onkeyup="searchJobs()" placeholder="Search for a job...">
     </div>
-  <div style="text-align: center; margin: 20px 0;">
-  <input type="text" id="searchInput" placeholder="Search for jobs..." style="padding: 8px; width: 60%; max-width: 400px;">
-  <button id="searchBtn" style="padding: 8px 16px;">Search</button>
+  </header>
+
+  <marquee scrollamount="6">🔥 Latest Sarkari Jobs, Admit Cards, and Results Updated Daily! 🔥</marquee>
+
+  <!-- Google AdSense Banner -->
+  <div style="margin: 20px auto; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1234567890"
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
-    <div id="filter-buttons">
-      <button onclick="filterJobs('all')">All</button>
-      <button onclick="filterJobs('form')">Online Form</button>
-      <button onclick="filterJobs('admit')">Admit Card</button>
-      <button onclick="filterJobs('result')">Result</button>
+
+  <div class="filter">
+    <input type="text" id="jobFilter" onkeyup="filterJobs()" placeholder="Search jobs...">
+  </div>
+
+  <div class="jobs-container" id="jobs">
+    <div class="job-card">
+      <h3>SSC CGL 2025 Notification</h3>
+      <p>Apply for Combined Graduate Level Exam 2025.</p>
+      <a href="https://ssc.nic.in">Apply Now</a>
     </div>
-
-    <div class="links" id="linksContainer">
-      <div class="link-box form">
-        <a href="https://www.csbc.bih.nic.in/" target="_blank">Bihar Police Constable Apply Online</a>
-        <button class="apply-btn" onclick="window.open('https://www.csbc.bih.nic.in/', '_blank')">Apply Now</button>
-      </div>
-      <div class="link-box form">
-        <a href="https://ssc.nic.in/" target="_blank">SSC CGL 2025 Notification</a>
-        <button class="apply-btn" onclick="window.open('https://ssc.nic.in/', '_blank')">Apply Now</button>
-      </div>
-      <div class="link-box result">
-        <a href="https://upsc.gov.in/" target="_blank">UPSC NDA 1 Result 2025</a>
-      </div>
-      <div class="link-box form">
-        <a href="https://upbasiceduboard.gov.in/" target="_blank">UPTET Online Form 2025</a>
-        <button class="apply-btn" onclick="window.open('https://upbasiceduboard.gov.in/', '_blank')">Apply Now</button>
-      </div>
-      <div class="link-box result">
-        <a href="https://www.rrbcdg.gov.in/" target="_blank">Railway Group D Result</a>
-      </div>
-      <div class="link-box admit">
-        <a href="https://ssc.nic.in/" target="_blank">SSC MTS Tier 1 Admit Card</a>
-      </div>
-      <div class="link-box form">
-        <a href="https://ctet.nic.in/" target="_blank">CTET July 2025 Online Form</a>
-        <button class="apply-btn" onclick="window.open('https://ctet.nic.in/', '_blank')">Apply Now</button>
-      </div>
-      <div class="link-box result">
-        <a href="https://delhipolice.gov.in/" target="_blank">Delhi Police Head Constable Result</a>
-      </div>
-      <div class="link-box admit">
-        <a href="https://neet.nta.nic.in/" target="_blank">NTA NEET 2025 Admit Card</a>
-      </div>
-  <div class="link-box form">
-    <a href="https://ssc.nic.in/" target="_blank">SSC CGL 2025 Notification</a>
-    <button class="apply-btn" onclick="window.open('https://ssc.nic.in/', '_blank')">Apply Now</button>
-  </div>
-  <div class="link-box form">
-    <a href="https://www.upsc.gov.in/" target="_blank">UPSC Civil Services Exam</a>
-    <button class="apply-btn" onclick="window.open('https://www.upsc.gov.in/', '_blank')">Apply Now</button>
-  </div>
-  <div class="link-box admit">
-    <a href="https://ssc.nic.in/" target="_blank">SSC GD Admit Card</a>
-  </div>
-  <div class="link-box result">
-    <a href="https://upsc.gov.in/" target="_blank">UPSC NDA Result</a>
-  </div>
-  <div class="link-box form">
-    <a href="https://ibps.in/" target="_blank">IBPS PO 2025 Online Form</a>
-    <button class="apply-btn" onclick="window.open('https://ibps.in/', '_blank')">Apply Now</button>
-  </div>
-  <div class="link-box result">
-    <a href="https://www.rbi.org.in/" target="_blank">RBI Assistant Result</a>
-  </div>
-  <div class="link-box admit">
-    <a href="https://www.nta.ac.in/" target="_blank">NTA UGC NET Admit Card</a>
-  </div>
-  <div class="link-box form">
-    <a href="https://ctet.nic.in/" target="_blank">CTET July 2025 Form</a>
-    <button class="apply-btn" onclick="window.open('https://ctet.nic.in/', '_blank')">Apply Now</button>
-  </div>
-  <div class="link-box form">
-    <a href="https://delhipolice.gov.in/" target="_blank">Delhi Police Recruitment</a>
-    <button class="apply-btn" onclick="window.open('https://delhipolice.gov.in/', '_blank')">Apply Now</button>
-  </div>
-  <div class="link-box result">
-    <a href="https://www.rrbcdg.gov.in/" target="_blank">RRB Group D Result</a>
-  </div>
-      <div class="link-box form">
-        <a href="https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf" target="_blank">CET B.Ed Answer Key</a>
-        <button class="apply-btn" onclick="window.open('https://biharcetbed-lnmu.in/couch/uploads/file/b-ed-answer-key(1).pdf', '_blank')">Apply Now</button>
-      </div>
+    <div class="job-card">
+      <h3>UPSC Civil Services</h3>
+      <p>IAS/IPS 2025 Prelims Registration Open</p>
+      <a href="https://upsc.gov.in">Apply Now</a>
     </div>
-<div class="content-wrapper">
-  <div class="main-content">
-    <!-- Your job listings and other content -->
+    <div class="job-card">
+      <h3>Railway Group D Recruitment</h3>
+      <p>Railways opening 40,000+ vacancies.</p>
+      <a href="https://www.rrbcdg.gov.in">Apply Now</a>
+    </div>
+    <!-- Add more job cards as needed -->
   </div>
 
-  <div class="sidebar">
-    <h3>Quick Links</h3>
-    <ul>
-      <li><a href="#">SSC Jobs</a></li>
-      <li><a href="#">UPSC Jobs</a></li>
-      <li><a href="#">Admit Cards</a></li>
-      <li><a href="#">Sarkari Results</a></li>
-      <li><a href="https://t.me/govtjobinstantupdate" target="_blank">Join Telegram</a></li>
-    </ul>
-  </div>
-</div>
-<style>
+  <footer>
+    &copy; 2025 Ujjawal Jobs. All rights reserved.
+  </footer>
 
-    function filterJobs(category) {
-      const boxes = document.querySelectorAll('.link-box');
-      boxes.forEach(box => {
-        const matchCategory = box.classList.contains(category);
-        box.style.display = (category === 'all' || matchCategory) ? 'block' : 'none';
-      });
-    }
-
-    function searchJobs() {
-      const input = document.getElementById('search-input').value.toLowerCase();
-      const boxes = document.querySelectorAll('.link-box');
-      boxes.forEach(box => {
-        const text = box.textContent.toLowerCase();
-        box.style.display = text.includes(input) ? 'block' : 'none';
-      });
-    }
-  </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5513095003749378"
-     crossorigin="anonymous"></script>
-  </script>
-<section style="text-align: center; margin: 30px 0;">
-  <h2>📢 Join Our Official Groups</h2>
-  <a href="https://chat.whatsapp.com/DRjXF4crY2hKtwRWetZKkA" target="_blank" style="text-decoration: none; margin: 10px;">
-    <button style="background-color: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;">
-      Join WhatsApp Group
-    </button>
-  </a>
-</section>
-<!-- Running Headline -->
-<div style="background: #ffeb3b; padding: 10px; overflow: hidden; white-space: nowrap;">
-  <marquee behavior="scroll" direction="left" scrollamount="6">
-    NDA 2025 Notification Out – Apply Now | CDS II 2025 Applications Open!
-  </marquee>
-</div>
   <script>
-  document.getElementById("searchBtn").addEventListener("click", function () {
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    const jobs = document.querySelectorAll(".job-card"); // Assuming job cards
-
-    jobs.forEach(job => {
-      const content = job.textContent.toLowerCase();
-      if (content.includes(query)) {
-        job.style.display = "block";
-      } else {
-        job.style.display = "none";
+    function filterJobs() {
+      const input = document.getElementById('jobFilter').value.toLowerCase();
+      const jobs = document.getElementById('jobs').getElementsByClassName('job-card');
+      for (let job of jobs) {
+        job.style.display = job.textContent.toLowerCase().includes(input) ? '' : 'none';
       }
-    });
-  });
+    }
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5513095003749378"
-     crossorigin="anonymous"></script>
-</script>
-<footer style="text-align: center; margin-top: 40px; font-size: 14px; color: #777;">
-  <p>© 2025 Ujjawal Jobs | 
-    <a href="privacy.html">Privacy Policy</a> | 
-    <a href="contact.html">Contact Us</a>
-  </p>
-</footer>
 </body>
 </html>
