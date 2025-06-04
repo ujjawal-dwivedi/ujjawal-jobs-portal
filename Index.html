@@ -153,63 +153,6 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
       font-size: 14px;
       color: #666;
     }
-
-    .hidden { display: none; }
-
-    #login-section {
-      max-width: 400px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-
-    #login-section input {
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-    }
-
-    #login-section button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    #logoutBtn {
-      display: block;
-      margin: 20px auto;
-      background-color: #dc3545;
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    .content-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-/* Main job content */
-.main-content {
-  flex: 1;
-}
-
-/* Sidebar floated right */
 .sidebar {
   width: 250px;
   background-color: #f9f9f9;
@@ -274,19 +217,6 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
 <meta name="robots" content="index, follow">
 </head>
 <body>
-
-  <!-- Login Section -->
-  <div id="login-section">
-    <h2>Login / Signup</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <p class="error" id="error-msg"></p>
-  </div>
-
-  <!-- Job Content Section -->
-  <div id="content-section" class="hidden">
     <header>
       <h1>Ujjawal Jobs Portal</h1>
     </header>
@@ -394,61 +324,7 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
     </ul>
   </div>
 </div>
-    <button id="logoutBtn" onclick="logout()">Logout</button>
-    <footer>&copy; 2025 Ujjawal Jobs Portal. All rights reserved.</footer>
-  </div>
- <h2 style="text-align: center;">Login to Ujjawal Jobs Portal</h2>
-<p style="text-align: center;">Secure login to access and apply for the latest government job updates.</p>
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
-      authDomain: "ujjawal-jobs-portal.firebaseapp.com",
-      projectId: "ujjawal-jobs-portal",
-      storageBucket: "ujjawal-jobs-portal.appspot.com",
-      messagingSenderId: "746809559960",
-      appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
-      measurementId: "G-R1EBJHZ8KP"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-    const auth = firebase.auth();
-
-    function login() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => showContent())
-        .catch(error => {
-          document.getElementById("error-msg").textContent = error.message;
-        });
-    }
-
-    function signup() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => showContent())
-        .catch(error => {
-          document.getElementById("error-msg").textContent = error.message;
-        });
-    }
-
-    function logout() {
-      firebase.auth().signOut().then(() => {
-        document.getElementById("content-section").classList.add("hidden");
-        document.getElementById("login-section").classList.remove("hidden");
-      });
-    }
-
-    function showContent() {
-      document.getElementById("login-section").classList.add("hidden");
-      document.getElementById("content-section").classList.remove("hidden");
-    }
-
-    auth.onAuthStateChanged(user => {
-      if (user) showContent();
-    });
+<style>
 
     function filterJobs(category) {
       const boxes = document.querySelectorAll('.link-box');
@@ -466,6 +342,7 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
         box.style.display = text.includes(input) ? 'block' : 'none';
       });
     }
+  </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5513095003749378"
      crossorigin="anonymous"></script>
   </script>
@@ -483,57 +360,6 @@ property="og:description" content="Find latest Sarkari Naukri, admit cards & res
     NDA 2025 Notification Out – Apply Now | CDS II 2025 Applications Open!
   </marquee>
 </div>
-
-<!-- About Section -->
-<section id="about" style="padding: 20px; background-color: #f1f1f1;">
-  <h2>About Us</h2>
-  <p>We are committed to providing the latest government job updates, admit cards, results, and more to help aspirants stay informed and act fast. Our platform ensures reliable and fast updates every day.</p>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" style="padding: 20px; background-color: #ffffff;">
-  <h2>Contact Us</h2>
-  <p>Have questions or suggestions? Reach out to us anytime:</p>
-  <ul>
-    <li>Email: <a href="ujjawaldwivedi620@gmail.com">ujjawaldwivedi620@gmail.com</a></li>
-    <li>Telegram: <a href="https://t.me/govtjobinstantupdate" target="_blank" rel="noopener noreferrer">Join our Telegram Channel</a></li>
-  </ul>
-</section>
-<!-- Dark Mode Toggle Button -->
-<button onclick="toggleDarkMode()" style="position: fixed; top: 10px; right: 10px; z-index: 9999; padding: 8px 16px; border-radius: 6px; border: none; background-color: #444; color: white; cursor: pointer;">
-  🌙 Dark Mode
-</button>
-
-<script>
-  function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-  }
-
-  // Load saved mode from previous visit
-  window.onload = () => {
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
-    }
-  };
-  function forgotPassword() {
-    const email = document.getElementById('email').value;
-    if (!email) {
-      alert("Please enter your registered email address first.");
-      return;
-    }
-
-    firebase.auth().sendPasswordResetEmail(email)
-      .then(() => {
-        alert("Password reset link sent to your email.");
-      })
-      .catch((error) => {
-        console.error(error);
-        alert("Error: " + error.message);
-      });
-  }
-  <small style="display: block; text-align: center; margin-top: 10px;">
-  Your credentials are securely handled using Google Firebase Authentication.
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5513095003749378"
      crossorigin="anonymous"></script>
 </script>
