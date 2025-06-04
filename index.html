@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ujjawal Jobs Portal | Sarkari Result Style</title>
+  <meta name="description" content="Get latest government job notifications, admit cards, results and more.">
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #800000;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .marquee {
+      background: yellow;
+      color: black;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .container {
+      padding: 15px;
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      border-bottom: 2px solid #800000;
+      padding-bottom: 5px;
+      color: #800000;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    td a {
+      color: #800000;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    td a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      background: #800000;
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .admin-panel {
+      margin-top: 40px;
+    }
+    .admin-panel input, .admin-panel button {
+      padding: 8px;
+      margin: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    @media(max-width: 600px) {
+      header h1 {
+        font-size: 20px;
+      }
+      .marquee {
+        font-size: 14px;
+      }
+      td, th {
+        font-size: 14px;
+      }
+    }
+  </style>
+
+  <!-- ✅ Google AdSense -->
+  <script data-ad-client="ca-pub-1234567890123456" async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>Ujjawal Jobs Portal</h1>
+</header>
+
+<div class="marquee">
+  Breaking: SSC CGL 2025 Notification Out | UP Police Admit Card Released | Check Now!
+</div>
+
+<div class="container">
+  <h2>Latest Job Notifications</h2>
+  <table id="jobsTable">
+    <tr>
+      <th>Post Name</th>
+      <th>Apply Link</th>
+    </tr>
+    <!-- Jobs will be injected here -->
+  </table>
+
+  <!-- ✅ Admin Login Section -->
+  <div class="admin-panel">
+    <h2>Admin Panel</h2>
+    <div id="loginSection">
+      <input type="email" id="email" placeholder="Admin Email">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="adminSection" class="hidden">
+      <input type="text" id="jobTitle" placeholder="Job Title">
+      <input type="text" id="jobLink" placeholder="Job Link">
+      <button onclick="addJob()">Add Job</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Ujjawal Jobs Portal | All Rights Reserved
+</footer>
+
+<!-- ✅ Firebase -->
+<script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // ✅ Your Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+    authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+    projectId: "ujjawal-jobs-portal",
+    storageBucket: "ujjawal-jobs-portal.firebasestorage.app",
+    messagingSenderId: "746809559960",
+    appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+    measurementId: "G-R1EBJHZ8KP",
+    databaseURL: "https://ujjawal-jobs-portal-default-rtdb.firebaseio.com"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const auth = getAuth();
+
+  const jobsTable = document.getElementById("jobsTable");
+  const loginSection = document.getElementById("loginSection");
+  const adminSection = document.getElementById("adminSection");
+
+  // Show jobs from Firebase
+  const jobsRef = ref(db, 'jobs');
+  onValue(jobsRef, (snapshot) => {
+    const data = snapshot.val();
+    jobsTable.innerHTML = `
+      <tr>
+        <th>Post Name</th>
+        <th>Apply Link</th>
+      </tr>
+    `;
+    for (let key in data) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${data[key].title}</td>
+        <td><a href="${data[key].link}" target="_blank">Apply Now</a></td>
+        ${auth.currentUser ? `<td><button onclick="deleteJob('${key}')">Delete</button></td>` : ''}
+      `;
+      jobsTable.appendChild(row);
+    }
+  });
+
+  // Login
+  window.login = () => {
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    signInWithEmailAndPassword(auth, email, pass)
+      .then(() => alert("Logged in successfully!"))
+      .catch((err) => alert("Login Failed: " + err.message));
+  };
+
+  // Add Job
+  window.addJob = () => {
+    const title = document.getElementById("jobTitle").value;
+    const link = document.getElementById("jobLink").value;
+    if (title && link) {
+      push(jobsRef, { title, link });
+      document.getElementById("jobTitle").value = '';
+      document.getElementById("jobLink").value = '';
+    } else {
+      alert("Please fill both fields.");
+    }
+  };
+
+  // Delete Job
+  window.deleteJob = (key) => {
+    if (confirm("Delete this job?")) {
+      remove(ref(db, `jobs/${key}`));
+    }
+  };
+
+  // Logout
+  window.logout = () => {
+    signOut(auth).then(() => alert("Logged out!"));
+  };
+
+  // Show/hide admin panel
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginSection.classList.add("hidden");
+      adminSection.classList.remove("hidden");
+    } else {
+      loginSection.classList.remove("hidden");
+      adminSection.classList.add("hidden");
+    }
+  });
+</script>
+
+</body>
+</html>
