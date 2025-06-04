@@ -233,6 +233,38 @@
       adminSection.classList.add("hidden");
     }
   });
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoFhagNEBJuZXPvQo9SdX0bgxrcO-L-Tc",
+    authDomain: "ujjawal-jobs-portal.firebaseapp.com",
+    projectId: "ujjawal-jobs-portal",
+    storageBucket: "ujjawal-jobs-portal.appspot.com",
+    messagingSenderId: "746809559960",
+    appId: "1:746809559960:web:3bedd90b3e0e87b5ed39ed",
+    measurementId: "G-R1EBJHZ8KP",
+    databaseURL: "https://ujjawal-jobs-portal-default-rtdb.firebaseio.com"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const jobsRef = db.ref("jobs");
+
+  jobsRef.on("child_added", function(snapshot) {
+    const job = snapshot.val();
+    const container = document.getElementById("job-list");
+
+    const jobCard = document.createElement("div");
+    jobCard.innerHTML = `
+      <div style="padding: 10px; border-bottom: 1px solid #ccc;">
+        <strong>${job.title}</strong><br>
+        <a href="${job.link}" target="_blank">Apply Now</a>
+      </div>
+    `;
+    container.prepend(jobCard);
+  });
 </script>
 
 </body>
