@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ujjawal-jobs.netlify.app/sitemap.xml
