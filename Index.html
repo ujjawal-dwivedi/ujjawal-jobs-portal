@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Docs</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 0; }
+    .login-box, .app { max-width: 400px; margin: 80px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1);}
+    h2 { text-align: center; color: #333; }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;}
+    button:hover { background: #0056b3; }
+    .file-list { margin-top: 20px; }
+    .file-item { background: #f1f1f1; padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;}
+    .file-actions button { margin-left: 5px; padding: 5px 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Section -->
+  <div class="login-box" id="loginBox">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Enter Gmail">
+    <input type="password" id="password" placeholder="Enter Password">
+    <button onclick="login()">Login</button>
+    <p id="error" style="color:red; text-align:center;"></p>
+  </div>
+
+  <!-- App Section -->
+  <div class="app" id="app" style="display:none;">
+    <h2>My Documents</h2>
+    <input type="file" id="fileInput" accept="application/pdf">
+    <button onclick="uploadFile()">Upload</button>
+    <div class="file-list" id="fileList"></div>
+    <button style="background:#dc3545;margin-top:15px;" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    const correctEmail = "ujjawaldwivedi620@gmail.com";
+    const correctPassword = "tara#2007";
+
+    // Login function
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (email === correctEmail && password === correctPassword) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        loadFiles();
+      } else {
+        document.getElementById("error").innerText = "Invalid Email or Password";
+      }
+    }
+
+    // Logout
+    function logout() {
+      document.getElementById("loginBox").style.display = "block";
+      document.getElementById("app").style.display = "none";
+    }
+
+    // Upload File
+    function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) return alert("Please select a PDF");
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = e.target.result;
+        let files = JSON.parse(localStorage.getItem("myDocs") || "[]");
+        files.push({ name: file.name, data: base64 });
+        localStorage.setItem("myDocs", JSON.stringify(files));
+        loadFiles();
+        fileInput.value = "";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Load Files
+    function loadFiles() {
+      const fileList = document.getElementById("fileList");
+      fileList.innerHTML = "";
+      let files = JSON.parse(localStorage.getItem("myDocs") || "[]");
+      files.forEach((file, index) => {
+        const div = document.createElement("div");
+        div.className = "file-item";
+        div.innerHTML = `
+          <span>${file.name}</span>
+          <div class="file-actions">
+            <button onclick="viewFile(${index})">View</button>
+            <button onclick="downloadFile(${index})">Download</button>
+            <button style="background:#dc3545;" onclick="deleteFile(${index})">Delete</button>
+          </div>
+        `;
+        fileList.appendChild(div);
+      });
+    }
+
+    // View File
+    function viewFile(index) {
+      let files = JSON.parse(localStorage.getItem("myDocs") || "[]");
+      const win = window.open();
+      win.document.write(`<iframe src="${files[index].data}" width="100%" height="100%"></iframe>`);
+    }
+
+    // Download File
+    function downloadFile(index) {
+      let files = JSON.parse(localStorage.getItem("myDocs") || "[]");
+      const a = document.createElement("a");
+      a.href = files[index].data;
+      a.download = files[index].name;
+      a.click();
+    }
+
+    // Delete File
+    function deleteFile(index) {
+      let files = JSON.parse(localStorage.getItem("myDocs") || "[]");
+      files.splice(index, 1);
+      localStorage.setItem("myDocs", JSON.stringify(files));
+      loadFiles();
+    }
+  </script>
+</body>
+</html>
